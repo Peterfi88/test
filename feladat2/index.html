@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feladat 2</title>
+</head>
+<body>
+    <button onclick="startNewGame()">Uj jatek</button>
+    <div id="task_messages">
+        Tippeld meg mennyi '5' masodperc!
+    </div>
+    <button onclick="startMeasure()">Indit</button>
+    <button onclick="stopMeasure()">Leallit</button>
+    <div id="result_messages">
+
+    </div>
+
+    <script>
+        let numberOfSecondsToGuess = 5;
+        let timerStart = null;
+        let timerEnd = null;
+
+        /**
+         * When called, it will generate an integer between 1 and 10, this will be the amount of seconds the player has to guess.
+         */
+        function startNewGame() {
+            const randomNumberBetween0and1 = Math.random();
+            const randomNumberBetween0and9 = randomNumberBetween0and1 * 9;
+            const randomNumberBetween1and10 = 1 + randomNumberBetween0and9;
+            const randomIntegerBetween1and10 = Math.round(randomNumberBetween1and10);
+
+            numberOfSecondsToGuess = randomIntegerBetween1and10;
+
+            document.getElementById('task_messages').innerText = "Tippeld meg mennyi " + numberOfSecondsToGuess + " masodperc!";
+        }
+
+        /**
+         * When called, starts the stopwatch counting time.
+         */
+        function startMeasure() {
+            timerStart = Date.now();
+        }
+
+         /**
+         * When called, stops the stopwatch, and calculates the difference in time, then prints the result.
+         */
+        function stopMeasure() {
+            timerEnd = Date.now();
+
+            const deltaTime = timerEnd - timerStart;
+
+            const numberOfMsToGuess = numberOfSecondsToGuess * 1000;
+
+            const guessInaccuracy = deltaTime - numberOfMsToGuess;
+
+            let gameEndMessage = null;
+            if (Math.abs(guessInaccuracy) < 500) {
+                gameEndMessage = "Nyertel! " + guessInaccuracy + " ezredmasodpercre voltal a celtol.";
+            } else {
+                gameEndMessage = "Vesztettel. " + guessInaccuracy + " ezredmasodpercre voltal a celtol.";
+            }
+
+            document.getElementById('result_messages').innerText = gameEndMessage;
+        }
+
+        /**
+         * --------------x---------------
+         * ===========x==================
+         *            <--> : deltaTime
+         * 
+         * Math.abs(deltaTime - numberOfSecondsToGuess)
+         * 
+         */
+    </script>
+</body>
+</html>
